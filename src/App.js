@@ -1,25 +1,62 @@
-import logo from './logo.svg';
+// Components
+import React, {Component} from 'react';
+import TodoInput from './TodoInput';
+import TodoList from './TodoList';
+
+// css
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      tasks: [
+        {
+          title: 'デフォルトTODO',
+          id : 0
+        },
+      ],
+      uniqueId: 1,
+    };
+
+    this.addTodo = this.addTodo.bind(this);
+    this.resetTodo = this.resetTodo.bind(this);
+
+  }
+
+  addTodo(title) {
+    const {
+      tasks,
+      uniqueId,
+    } = this.state;
+
+    tasks.push({
+      title: title,
+      id: uniqueId,
+    });
+
+    this.setState({
+      tasks,
+      uniqueId: uniqueId + 1,
+    });
+  }
+
+  resetTodo() {
+    this.setState({
+      tasks: []
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1> TODO App </h1>
+        <button onClick={this.resetTodo}>リセット</button>
+        <TodoInput addTodo={this.addTodo} />
+        <TodoList tasks={this.state.tasks} /> 
+      </div>
+    )
+  }
 }
 
 export default App;
